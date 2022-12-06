@@ -1,7 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import "react-slideshow-image/dist/styles.css";
-//import { Slide } from "react-slideshow-image";
-import { Zoom } from "react-slideshow-image";
+import { Slide } from "react-slideshow-image";
 import "./home.css";
 
 export let Home = () => {
@@ -15,77 +14,65 @@ export let Home = () => {
   );
 };
 
-// export let Slideshow = () => {
-//   const images = [
-//     <img
-//       alt="gloomhaven"
-//       src="./images/gloomhaven.jpg"
-//       style={{ width: "100%" }}
-//     />,
-//     <img
-//       alt="terriforming-mars"
-//       src="./images/terriforming-mars.jpg"
-//       style={{ width: "100%" }}
-//     />,
-//   ];
-//   return (
-//     <>
-//       <Slide>
-//         <div className="each-slide-effect">
-//           <div style={{ backgroundImage: `url(${images[0]})` }}>
-//             <span>Slide 1</span>
-//           </div>
-//         </div>
-//         <div className="each-slide-effect">
-//           <div style={{ backgroundImage: `url(${images[1]})` }}>
-//             <span>Slide 2</span>
-//           </div>
-//         </div>
-//         <div className="each-slide-effect">
-//           <div style={{ backgroundImage: `url(${images[2]})` }}>
-//             <span>Slide 3</span>
-//           </div>
-//         </div>
-//       </Slide>
-//     </>
-//   );
-// };
+class App extends Component {
+  constructor() {
+    super();
+    this.slideRef = React.createRef();
+    this.back = this.back.bind(this);
+    this.next = this.next.bind(this);
+    this.state = {
+      current: 0,
+    };
+  }
 
-let images = ["images/gloomhaven.jpg", "images/terriforming-mars.jpg"];
+  back() {
+    this.slideRef.current.goBack();
+  }
 
-// export let Slideshow = () => {
-//   return (
-//     <div className="slide-container">
-//       <Slide>
-//         {slideImages.map((slideImages, index) => (
-//           <div className="each-slide" key={index}>
-//             <div style={{ backgroundImage: `url(${slideImages.url})` }}>
-//               <span>{slideImages.caption}</span>
-//             </div>
-//           </div>
-//         ))}
-//       </Slide>
-//     </div>
-//   );
-// };
+  next() {
+    this.slideRef.current.goNext();
+  }
 
-const zoomOutProperties = {
-  duration: 5000,
-  transitionDuration: 500,
-  infinite: true,
-  indicators: true,
-  scale: 0.4,
-  arrows: true,
-};
+  render() {
+    const properties = {
+      duration: 5000,
+      autoplay: false,
+      transitionDuration: 500,
+      arrows: false,
+      infinite: true,
+      easing: "ease",
+      indicators: (i) => <div className="indicator">{i + 1}</div>,
+    };
+    const slideImages = [
+      "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+      "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
+      "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+      "https://images.unsplash.com/photo-1444525873963-75d329ef9e1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+    ];
+    return (
+      <div className="App">
+        <h3>Slide Effect</h3>
+        <div className="slide-container">
+          <Slide ref={this.slideRef} {...properties}>
+            {slideImages.map((each, index) => (
+              <div key={index} className="each-slide">
+                <img className="lazy" src={each} alt="sample" />
+              </div>
+            ))}
+          </Slide>
+        </div>
 
-export const Slideshow = () => {
-  return (
-    <div className="img">
-      <Zoom {...zoomOutProperties}>
-        {images.map((each, index) => (
-          <img key={index} src={each} alt={index} />
-        ))}
-      </Zoom>
-    </div>
-  );
-};
+        <div className="slide-container buttons">
+          <button onClick={this.back} type="button">
+            Go Back
+          </button>
+          <button onClick={this.next} type="button">
+            Go Next
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;

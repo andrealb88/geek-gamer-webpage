@@ -13,6 +13,35 @@ function App() {
   // const [user, setUser] = useState([]);
 
   useEffect(() => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     getAllCategories().then((categoriesFromServer) => {
       setCategories(categoriesFromServer);
     });
